@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -10,6 +11,13 @@ import (
 
 	"github.com/joho/godotenv"
 )
+
+var version string
+
+type PageData struct {
+	Files   []string
+	Version string
+}
 
 func main() {
 	err := godotenv.Load()
@@ -33,8 +41,29 @@ func main() {
 			return
 		}
 
-		filePath := filepath.Join(basePath, r.URL.Path)
-		http.ServeFile(w, r, filePath)
+		if r.URL.Path == "/" {
+			files, err := os.ReadDir(basePath)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			fileNames := make([]string, len(files))
+			for i, file := range files {
+				fileNames[i] = file.Name()
+			}
+
+			data := PageData{
+				Files:   fileNames,
+				Version: version,
+			}
+
+			tmpl := template.Must(template.ParseFiles("public/template.html"))
+			tmpl.Execute(w, data)
+		} else {
+			filePath := filepath.Join(basePath, r.URL.Path)
+			http.ServeFile(w, r, filePath)
+		}
 	})
 
 	port, _ := strconv.Atoi(serverPort)
