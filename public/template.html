@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Directory Listing</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #1e1e2e;
+        color: #ffffff;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      ul {
+        list-style: none;
+        padding-left: 20px;
+      }
+
+      li {
+        margin-bottom: 5px;
+        cursor: pointer;
+      }
+
+      li:hover {
+        color: #00a8cc;
+      }
+
+      li.folder > ul {
+        display: none;
+      }
+
+      li.folder:hover > ul {
+        display: block;
+      }
+
+      a {
+        text-decoration: none;
+        color: #00ddff;
+        font-weight: bold;
+      }
+
+      a:hover {
+        color: #00ccff; /* darker shade on hover */
+      }
+
+      footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #313244;
+        color: #ffffff;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 14px;
+        border-top: 1px solid #555677;
+        box-sizing: border-box;
+      }
+
+      footer > div {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Directory Listing</h1>
+    <ul>
+      {{range .Files}}
+      <li><a href="{{.}}">{{.}}</a></li>
+      {{end}}
+    </ul>
+
+    <footer id="footer">Served by Echo {{.Version}}</footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const footer = document.getElementById("footer");
+        const version = footer.textContent.split(" ").pop();
+        const githubURL = `https://github.com/NotAShelf/Echo/tags/${version}`;
+
+        const link = document.createElement("a");
+        link.href = githubURL;
+        link.textContent = version;
+
+        footer.innerHTML = "Served by Echo ";
+        footer.appendChild(link);
+      });
+    </script>
+  </body>
+</html>

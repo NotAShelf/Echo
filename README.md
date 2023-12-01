@@ -1,6 +1,6 @@
 # Echo
 
-Janus allows you to setup a simple file server for local testing.
+Echo allows you to setup a simple file server for local testing.
 
 ### Requirements
 
