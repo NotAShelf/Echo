@@ -4,7 +4,7 @@
   ...
 }: let
   pname = "echo";
-  version = "0.1.0";
+  version = "0.1.1";
 in
   buildGoModule {
     inherit pname version;
